@@ -1,0 +1,31 @@
+<!--  
+    *    View name   :App
+    *    Application :Help Document    
+    *    Author      :Nakkina Yaswanth(NYASWANTH)
+    *    Date        :23-05-2023(dd-mm-yyyy)
+    *    Purpose     :Main View
+    *    Modification Histoty
+ -->
+ <mvc:View controllerName="com.ztcsap.helpdocument.zhelpdocument.controller.HelpDocument"
+ xmlns:mvc="sap.ui.core.mvc"
+ xmlns:core="sap.ui.core" displayBlock="true"
+ xmlns="sap.m"
+ xmlns:f="sap.f"
+ xmlns:fb="sap.ui.comp.filterbar"
+ xmlns:table="sap.ui.table">
+ <Page
+     showHeader="false"
+     enableScrolling="false"
+     class="sapUiContentPadding">
+ <content>
+    <table:Table id="helpDocumentTableId" rows="{path : 'oHelpDocumentModel>/Rowsets/Rowset/0/Row'}" selectionMode="None">
+        <table:Column id="docDescAlignId">
+            <Text text="{i18n>HelpDocuments.DocumentDescription}" class="sapMIColumnText"/>
+            <table:template>
+                <Link text="{path: 'oHelpDocumentModel>FileDescription'}" press="onClickLinks"/>
+            </table:template>
+        </table:Column>
+</table:Table>
+ </content>
+</Page>
+</mvc:View>

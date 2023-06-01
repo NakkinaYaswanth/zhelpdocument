@@ -9,10 +9,10 @@
     "sapui5"
   ],
   "main": "webapp/index.html",
-  "dependencies": {},
   "devDependencies": {
+    "@sap/ux-ui5-tooling": "1",
     "@ui5/cli": "^3.0.0",
-    "@sap/ux-ui5-tooling": "1"
+    "ui5-middleware-route-proxy": "^1.0.10"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#comztcsaphelpdocumentzhelpdocument-display\"",
@@ -25,5 +25,14 @@
     "unit-tests": "fiori run --open 'test/unit/unitTests.qunit.html'",
     "int-tests": "fiori run --open 'test/integration/opaTests.qunit.html'"
   },
-  "sapuxLayer": "CUSTOMER_BASE"
+  "ui5": {
+    "dependencies": [
+      "@sap/ux-ui5-tooling",
+      "ui5-middleware-route-proxy"
+    ]
+  },
+  "sapuxLayer": "CUSTOMER_BASE",
+  "dependencies": {
+    "npm": "^9.6.6"
+  }
 }
