@@ -11,8 +11,7 @@
   "main": "webapp/index.html",
   "devDependencies": {
     "@sap/ux-ui5-tooling": "1",
-    "@ui5/cli": "^3.0.0",
-    "ui5-middleware-route-proxy": "^1.0.10"
+    "@ui5/cli": "^3.0.0"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#comztcsaphelpdocumentzhelpdocument-display\"",
@@ -27,8 +26,7 @@
   },
   "ui5": {
     "dependencies": [
-      "@sap/ux-ui5-tooling",
-      "ui5-middleware-route-proxy"
+      "@sap/ux-ui5-tooling"
     ]
   },
   "sapuxLayer": "CUSTOMER_BASE",

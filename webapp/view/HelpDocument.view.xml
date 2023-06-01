@@ -9,23 +9,26 @@
  <mvc:View controllerName="com.ztcsap.helpdocument.zhelpdocument.controller.HelpDocument"
  xmlns:mvc="sap.ui.core.mvc"
  xmlns:core="sap.ui.core" displayBlock="true"
- xmlns="sap.m"
- xmlns:f="sap.f"
- xmlns:fb="sap.ui.comp.filterbar"
- xmlns:table="sap.ui.table">
+ xmlns="sap.m">
  <Page
      showHeader="false"
      enableScrolling="false"
      class="sapUiContentPadding">
  <content>
-    <table:Table id="helpDocumentTableId" rows="{path : 'oHelpDocumentModel>/Rowsets/Rowset/0/Row'}" selectionMode="None">
-        <table:Column id="docDescAlignId">
-            <Text text="{i18n>HelpDocuments.DocumentDescription}" class="sapMIColumnText"/>
-            <table:template>
-                <Link text="{path: 'oHelpDocumentModel>FileDescription'}" press="onClickLinks"/>
-            </table:template>
-        </table:Column>
-</table:Table>
+        <Table items="{path : 'oHelpDocumentModel>/Rowsets/Rowset/0/Row'}">
+                <columns>
+                    <Column>
+                        <Text text="{i18n>HelpDocuments.DocumentDescription}"/>
+                    </Column>                    
+                </columns>
+                <items>
+                <ColumnListItem vAlign="Middle">
+				    <cells>
+                        <Link text="{oHelpDocumentModel>FileDescription}" target="_blank" href="{oHelpDocumentModel>FilePath}"/>
+                    </cells>
+			    </ColumnListItem>
+                </items>                
+            </Table>
  </content>
 </Page>
 </mvc:View>

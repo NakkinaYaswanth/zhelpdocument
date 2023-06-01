@@ -16,16 +16,13 @@
 sap.ui.define(
     [
         "sap/ui/core/mvc/Controller",
-        "sap/ui/model/Filter",
-        "sap/ui/model/FilterOperator",
         "sap/m/MessageBox",
-        "sap/ui/core/Fragment",
         "sap/ui/model/json/JSONModel"
     ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Filter, FilterOperator, MessageBox, Fragment, JSONModel) {
+    function (Controller, MessageBox, JSONModel) {
         "use strict";
 
         return Controller.extend("com.ztcsap.helpdocument.zhelpdocument.controller.HelpDocument", {
@@ -65,25 +62,17 @@ sap.ui.define(
                 }
             },
 
-             /**
-         * method call to when link is pressed
-         */
-            onClickLinks: function (oEvent) {
-                var sPath = oEvent.getSource().mBindingInfos.text.binding.oContext.sPath;
-                var selectedRow = this.getView().getModel("oHelpDocumentModel").getProperty(sPath);
-                var selectedLink = selectedRow.FilePath;
-                window.open(selectedLink);
-            },
             /**
-         * method call to show BusyDialog
-         */
+             * method call to show BusyDialog
+             */
             showBusyIndicator: function () {
                 this._busyIndicator = new sap.m.BusyDialog({ title: "Loading..." });
                 this._busyIndicator.open();
             },
+
             /**
-            * method call to hise BusyDialog
-            */
+             * method call to hise BusyDialog
+             */
             hideBusyIndicator: function () {
                 if (this._busyIndicator) {
                     this._busyIndicator.close();

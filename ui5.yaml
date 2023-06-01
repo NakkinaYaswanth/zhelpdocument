@@ -26,15 +26,3 @@ server:
       configuration:
         component: com.ztcsap.helpdocument.zhelpdocument
         ui5Theme: sap_fiori_3
-    - name: ui5-middleware-route-proxy
-      afterMiddleware: compression
-      configuration:
-        debug: false
-        /XMII/Illuminator:
-          target: http://nwdmi75db1.gtcsap.corp:50000
-          replacePath: false
-          auth:
-            fromEnv: false
-            user: nyaswanth 
-            pass: Ny#0623welcome
-          changeOrigin: true
