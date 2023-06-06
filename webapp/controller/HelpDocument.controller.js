@@ -35,30 +35,107 @@ sap.ui.define(
                     this.uri = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/mainService/uri");
                     this.oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
                     this.showBusyIndicator();
-                    var oHelpDocumentModel = new JSONModel();
+                    var aPlantId = this.getParamatersfromURL();
+                    if(aPlantId == "" || aPlantId == undefined){
+                        this.getPlantId();
+                    }else{
+                        this.getHelpDocuments(aPlantId);
+                    }
+                    
+                } catch (e) {
+                    MessageBox.error(e.name + " : " + e.message);
+                }
+            },
+
+            /**
+             * Function to get the help documents.
+             * @function
+             * @name getHelpDocuments
+             * @public
+             */
+            getHelpDocuments:function(aPlantId){
+                var oHelpDocumentModel = new JSONModel();
+                var oParameters = {
+                    QueryTemplate: "GTMES/HelpDocuments/QueryTemplates/xqryGetHelpDocuments",
+                    "Content-Type": "text/json",
+                    "Param.1":aPlantId
+                };
+                this.getOwnerComponent().setModel(oHelpDocumentModel, "oHelpDocumentModel");
+                oHelpDocumentModel.setSizeLimit(1000);
+                oHelpDocumentModel.loadData(this.uri, oParameters, true, "GET", null, false, null).then(function () {
+                    var oHelpDocumentData = this.getOwnerComponent().getModel("oHelpDocumentModel").getProperty("/Rowsets/Rowset/0/Row");
+                    var oError = this.getView().getModel("oHelpDocumentModel").getProperty("/Rowsets/FatalError");
+                    if (oError) {
+                        this.hideBusyIndicator();
+                        MessageBox.error(oError);
+                        return;
+                    }
+                    if (!oHelpDocumentData) {
+                        this.hideBusyIndicator();
+                        MessageBox.error(this.oBundle.getText("NoHelpDocumentData"));
+                        return;
+                    }
+                    this.hideBusyIndicator();
+                }.bind(this));
+            },
+
+             /**
+             * Function to read the Plant Id.
+             * @function
+             * @name getPlantId
+             * @public
+             */
+            getPlantId:function(){
+                try{
+                    //Plant Data
+                    var oPlantModel = new JSONModel();
                     var oParameters = {
-                        QueryTemplate: "GTMES/HelpDocuments/QueryTemplates/xqryGetHelpDocuments",
+                        QueryTemplate: "GTMES/DataLoads/QueryTemplates/qryGetPlantData",
                         "Content-Type": "text/json",
                     };
-                    this.getOwnerComponent().setModel(oHelpDocumentModel, "oHelpDocumentModel");
-                    oHelpDocumentModel.setSizeLimit(1000);
-                    oHelpDocumentModel.loadData(this.uri, oParameters, true, "GET", null, false, null).then(function () {
-                        var oHelpDocumentData = this.getOwnerComponent().getModel("oHelpDocumentModel").getProperty("/Rowsets/Rowset/0/Row");
-                        var oError = this.getView().getModel("oHelpDocumentModel").getProperty("/Rowsets/FatalError");
+                    this.getOwnerComponent().setModel(oPlantModel, "oPlantModel");
+                    oPlantModel.setSizeLimit(1000);
+                    oPlantModel.loadData(this.uri, oParameters, true, "GET", null, false, null).then(function () {
+                        var oPlantData = this.getOwnerComponent().getModel("oPlantModel").getProperty("/Rowsets/Rowset/0/Row");
+                        var oError = this.getView().getModel("oPlantModel").getProperty("/Rowsets/FatalError");
                         if (oError) {
                             this.hideBusyIndicator();
                             MessageBox.error(oError);
                             return;
                         }
-                        if (!oHelpDocumentData) {
+                        if (!oPlantData) {
                             this.hideBusyIndicator();
-                            MessageBox.error(this.oBundle.getText("NoHelpDocumentData"));
+                            MessageBox.error(this.oBundle.getText("NoPlantData"));
                             return;
                         }
+
+                        this.getHelpDocuments(oPlantData[0].PLANTID);
                         this.hideBusyIndicator();
                     }.bind(this));
-                } catch (e) {
+                }catch(e){
                     MessageBox.error(e.name + " : " + e.message);
+                }
+            },
+
+             /**
+             * Function to read the paramaters from Cross App Navigation.
+             * @function
+             * @name getParamatersfromURL
+             * @public
+             */
+             getParamatersfromURL: function () {
+                var oParamaters = this.getOwnerComponent().getComponentData().startupParameters,
+                    sURLParamaters ="?",
+                    aParamaters = window.location.hash.split("?");                    
+                if(Object.keys(oParamaters).length){                    
+                   return oParamaters.PlantID[0];
+                }else if(aParamaters.length > 1){
+                    for(var i=1; i<aParamaters.length; i++){
+                        sURLParamaters = sURLParamaters+aParamaters[i];
+                    }
+                    if(UriParameters.fromQuery(sURLParamaters).has("PlantID")){
+                        return UriParameters.fromQuery(sURLParamaters).get("PlantID");                     
+                    }
                 }
             },
 
